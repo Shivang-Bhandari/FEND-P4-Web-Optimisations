@@ -1,6 +1,6 @@
 ## Website Performance Optimization portfolio project
 
-View the Project in Working at: [Website Optimization]().
+View the Project in Working at: [Git Pages](http://shivang-bhandari.github.io/FEND-P4-Web-Optimisations/).
 
 The Key Goal of this Project was to Optimize a Given Website As Much As Possible for Faster Rendering & to Achieve High PageSpeed Score.
 
@@ -8,14 +8,13 @@ The Key Goal of this Project was to Optimize a Given Website As Much As Possible
 
 ##### Results achieved:
 ###### PageSpeed Insights
-* Desktop (96/100)
-* Mobile (97/100)
+* Desktop (97/100)
+* Mobile (95/100)
 
 ##### Optimizations performed:
 
 * Optimized Images
-* Minified JavaScript
-* Minified CSS
+* Removing Render Blocking CSS
 * Inline CSS styling in `index.html`
 
 #### Part 2: Optimize Frames per Second in pizza.html
@@ -36,9 +35,7 @@ To optimize `views/pizza.html`, I modified `views/js/main.js` until the frames p
 
 3. Added `cachedScrollTop` outside the for loop in `updatePositions`.
 
-#### Tools used:
-* [Grunt](http://gruntjs.com/)
-* [CSS Minifier](http://cssminifier.com/)
-* [JS Compress](http://jscompress.com/)
-* [Kraken.io](http://kraken.io/)
-* [Unminify](http://unminify.com)
+#### Tools used
+* [Compressor.io](http://compressor.io)
+* [Tinypng](http://www.tinypng.com)
+* [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/)
