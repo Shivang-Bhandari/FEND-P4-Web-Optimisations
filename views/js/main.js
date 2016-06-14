@@ -400,31 +400,31 @@ var pizzaElementGenerator = function(i) {
 
 // resizePizzas(size) is called when the slider in the "Our Pizzas" section of the website moves.
 var resizePizzas = function(size) {
-  window.performance.mark("mark_start_resize");   // User Timing API function
-
+  window.performance.mark("mark_start_resize");
+}
   // Changes the value for the size of the pizza above the slider
-  function changeSliderLabel(size) {
+function changeSliderLabel(size) {
     switch(size) {
       case "1":
-        document.getElementsById("pizzaSize").innerHTML = "Small";
+        document.getElementById("pizzaSize").innerHTML = "Small";
         return;
       case "2":
-        document.getElementsById("pizzaSize").innerHTML = "Medium";
+        document.getElementById("pizzaSize").innerHTML = "Medium";
         return;
       case "3":
-        document.getElementsById("pizzaSize").innerHTML = "Large";
+        document.getElementById("pizzaSize").innerHTML = "Large";
         return;
       default:
         console.log("bug in changeSliderLabel");
     }
-  }
+}
 
-  changeSliderLabel(size);
+
 
    // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
   function determineDx (elem, size) {
     var oldWidth = elem.offsetWidth;
-    var windowWidth = document.getElementsById("randomPizzas").offsetWidth;
+    var windowWidth = document.getElementById("randomPizzas").offsetWidth;
     var oldSize = oldWidth / windowWidth;
 
     // Changes the slider value to a percent width
@@ -450,23 +450,27 @@ var resizePizzas = function(size) {
   // Iterates through pizza elements on the page and changes their widths
 
   function changePizzaSizes(size) {
-      var randomPizza = document.getElementsByClassName("randomPizzaContainer");
-      var dx = determineDx(randomPizza[0], size);
-      var newwidth = (randomPizza[0].offsetWidth + dx) + 'px';
-      var pizzaCount = document.querySelectorAll(".randomPizzaContainer");
-      for(var i= pizzaCount.length; i--;) {
-        pizzaCount[i].style.width = newwidth;
+      var pizzaContainerValue = document.getElementsByClassName("randomPizzaContainer");
+      var dx = determineDx(pizzaContainerValue[0], size);
+      var newwidth = (pizzaContainerValue[0].offsetWidth + dx) + 'px';
+      for(var i = 0; i < pizzaContainerValue.length; i++) {
+        pizzaContainerValue[i].style.width = newwidth;
       }
 
   }
 
+var resizePizzas = function(size) {
+  window.performance.mark("mark_start_resize");
+
+  changeSliderLabel(size);
   changePizzaSizes(size);
+
 
   // User Timing API is awesome
   window.performance.mark("mark_end_resize");
   window.performance.measure("measure_pizza_resize", "mark_start_resize", "mark_end_resize");
   var timeToResize = window.performance.getEntriesByName("measure_pizza_resize");
-  console.log("Time to resize pizzas: " + timeToResize[0].duration + "ms");
+  console.log("Time to resize pizzas: " + timeToResize[timeToResize.length-1].duration + "ms");
 };
 
 window.performance.mark("mark_start_generating"); // collect timing data
@@ -506,21 +510,25 @@ function updatePositions() {
   window.performance.mark("mark_start_frame");
 
   var items = document.querySelectorAll('.mover');
-  var cachedScrollTop = document.body.scrollTop;
-  for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((cachedScrollTop / 1250) + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
-  }
+  var phase = [];
+  for (var i = 0; i < 5; i++) {
+    //phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+    phase.push(Math.sin((document.body.scrollTop / 1250) + i));
 
-  // User Timing API to the rescue again. Seriously, it's worth learning.
-  // Super easy to create custom metrics.
-  window.performance.mark("mark_end_frame");
-  window.performance.measure("measure_frame_duration", "mark_start_frame", "mark_end_frame");
-  if (frame % 10 === 0) {
-    var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
-    logAverageFrame(timesToUpdatePosition);
+    }
+    for (var i = 0; i < items.length; i++) {
+      items[i].style.left = items[i].basicLeft + 100 * phase[i%5] + 'px';
+    }
+
+    // User Timing API to the rescue again. Seriously, it's worth learning.
+    // Super easy to create custom metrics.
+    window.performance.mark("mark_end_frame");
+    window.performance.measure("measure_frame_duration", "mark_start_frame", "mark_end_frame");
+    if (frame % 10 === 0) {
+      var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
+      logAverageFrame(timesToUpdatePosition);
+    }
   }
-}
 
 // runs updatePositions on scroll
 window.addEventListener('scroll', updatePositions);
